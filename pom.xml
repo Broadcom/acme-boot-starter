@@ -4,14 +4,14 @@
     <groupId>com.acme.boot</groupId>
     <artifactId>acme-boot-starter</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <name>acme-boot-starter</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>3.0.13</version>
+            <version>3.3.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
