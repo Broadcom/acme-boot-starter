@@ -10,12 +10,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class EmailValidatorTest {
+class EmailAddressValidatorTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"user@acme.com", "first.last+tag@sub.acme.co.uk", " padded@acme.com "})
     void acceptsValidAddresses(String email) {
-        assertTrue(EmailValidator.isValid(email));
+        assertTrue(EmailAddressValidator.isValid(email));
     }
 
     @ParameterizedTest
@@ -23,24 +23,24 @@ class EmailValidatorTest {
     @ValueSource(strings = {"   ", "plain", "@acme.com", "user@", "user@acme", "user@@acme.com",
             "user@acme..com", "us er@acme.com", "user@-acme.com"})
     void rejectsInvalidAddresses(String email) {
-        assertFalse(EmailValidator.isValid(email));
+        assertFalse(EmailAddressValidator.isValid(email));
     }
 
     @Test
     void rejectsTooLongAddress() {
         String longLocal = new String(new char[250]).replace('\0', 'a');
-        assertFalse(EmailValidator.isValid(longLocal + "@acme.com"));
+        assertFalse(EmailAddressValidator.isValid(longLocal + "@acme.com"));
     }
 
     @Test
     void normalizeTrimsAndLowerCases() {
-        assertEquals("user@acme.com", EmailValidator.normalize("  User@ACME.com "));
-        assertNull(EmailValidator.normalize(null));
+        assertEquals("user@acme.com", EmailAddressValidator.normalize("  User@ACME.com "));
+        assertNull(EmailAddressValidator.normalize(null));
     }
 
     @Test
     void domainOfReturnsDomainOrNull() {
-        assertEquals("acme.com", EmailValidator.domainOf("User@ACME.com"));
-        assertNull(EmailValidator.domainOf("not-an-email"));
+        assertEquals("acme.com", EmailAddressValidator.domainOf("User@ACME.com"));
+        assertNull(EmailAddressValidator.domainOf("not-an-email"));
     }
 }

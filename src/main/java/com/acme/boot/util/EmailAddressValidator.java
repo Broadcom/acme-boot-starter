@@ -6,14 +6,14 @@ import java.util.regex.Pattern;
 /**
  * Minimal email address helper, implemented in-house to avoid an extra dependency.
  */
-public final class EmailValidator {
+public final class EmailAddressValidator {
 
     private static final int MAX_LENGTH = 254;
 
     private static final Pattern EMAIL = Pattern.compile(
             "^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)+$");
 
-    private EmailValidator() {
+    private EmailAddressValidator() {
     }
 
     /** Returns true if the address looks like a valid email. Null-safe. */
