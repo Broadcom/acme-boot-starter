@@ -31,9 +31,9 @@ public class Notification {
     /**
      * Sends the message to the configured endpoint.
      *
-     * @throws IOException if the endpoint cannot be reached or answers with a non-2xx status
+     * @throws AcmeNotificationException if the endpoint cannot be reached or answers with a non-2xx status
      */
-    public void sendNotification() throws IOException {
+    public void sendNotification() throws AcmeNotificationException {
         HttpClient client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(5))
                 .build();
@@ -45,11 +45,13 @@ public class Notification {
         try {
             HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
             if (response.statusCode() / 100 != 2) {
-                throw new IOException("Notification rejected by " + endpoint + ": HTTP " + response.statusCode());
+                throw new AcmeNotificationException("Notification rejected by " + endpoint + ": HTTP " + response.statusCode());
             }
+        } catch (IOException e) {
+            throw new AcmeNotificationException("Could not send notification to " + endpoint, e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IOException("Interrupted while sending notification to " + endpoint, e);
+            throw new AcmeNotificationException("Interrupted while sending notification to " + endpoint, e);
         }
     }
 }

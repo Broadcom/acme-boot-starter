@@ -49,7 +49,7 @@ class NotificationTest {
     }
 
     @Test
-    void postsMessageToEndpoint() throws IOException {
+    void postsMessageToEndpoint() throws AcmeNotificationException {
         new Notification(endpoint(), "Your order shipped").sendNotification();
 
         assertEquals("POST", receivedMethod.get());
@@ -60,7 +60,7 @@ class NotificationTest {
     void failsWhenEndpointRejectsMessage() {
         responseStatus = 500;
 
-        IOException e = assertThrows(IOException.class,
+        AcmeNotificationException e = assertThrows(AcmeNotificationException.class,
                 () -> new Notification(endpoint(), "msg").sendNotification());
         assertTrue(e.getMessage().contains("500"));
     }
@@ -70,6 +70,8 @@ class NotificationTest {
         String unreachable = endpoint();
         server.stop(0);
 
-        assertThrows(IOException.class, () -> new Notification(unreachable, "msg").sendNotification());
+        AcmeNotificationException e = assertThrows(AcmeNotificationException.class,
+                () -> new Notification(unreachable, "msg").sendNotification());
+        assertTrue(e.getCause() instanceof IOException);
     }
 }
